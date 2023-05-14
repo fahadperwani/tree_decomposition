@@ -1,0 +1,8 @@
+graph "graph" {
+	node [shape=circle]
+	bde -- bcd
+	bde -- fe
+	bcd -- bca
+	fe -- fh
+	fe -- gf
+}
