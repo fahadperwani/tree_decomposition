@@ -46,10 +46,10 @@ class Ui_Decomposition(object):
         from Graph_draw import Draw_Graph
         from PyQt5.QtGui import QPixmap
         from dec1 import decomposition
+        from validation import TreeDecomposition
 
         _translate = QtCore.QCoreApplication.translate
 
-        print("data", self.data)
         start = time.time()
         width, edges = decomposition(self.data)
         Draw_Graph(edges)
@@ -68,6 +68,8 @@ class Ui_Decomposition(object):
         )
         pixmap = QPixmap("graph.gy.png")
         self.scene.addPixmap(pixmap)
+        v = TreeDecomposition(self.data, edges)
+        print(v.is_valid())
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

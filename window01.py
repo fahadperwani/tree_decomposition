@@ -28,7 +28,6 @@ class Ui_Window01(object):
         from PyQt5.QtGui import QPixmap
 
         edges = self.get_data()
-        print("edges", edges)
 
         try:
             Draw_Graph(edges)

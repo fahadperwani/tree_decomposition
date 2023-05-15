@@ -3,7 +3,6 @@ from graphviz import Graph
 
 def Draw_Graph(edges):
     # Directed graph
-    print(edges)
     G = Graph("graph")
     G.attr("node", shape="circle")
     for i in edges:

@@ -12,7 +12,6 @@ def decomposition(edges):
         print("edge", tuple(edge))
         edge = edge[1:3]
         e.append(tuple(edge))
-    print("e", e)
     G.add_edges_from(e)
     # Get the tree decompositiong
     bags = treewidth_min_degree(G)
@@ -27,7 +26,6 @@ def decomposition(edges):
                 idxes[edge] = [edges]
 
         arr.append(edges)
-    print(arr)
     for edges in arr:
         if "".join(sorted(edges[0])) in "".join(sorted(edges[1])):
             arr.remove(edges)
