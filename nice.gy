@@ -1,0 +1,27 @@
+graph "graph" {
+	node [shape=circle]
+	dgf -- dgf1
+	dgf -- dgf2
+	dfc -- fc1
+	gfh -- fh1
+	gfe -- fe1
+	dab -- ab1
+	dgf1 -- dgf3
+	dgf1 -- dgf4
+	dgf3 -- dgf5
+	dgf3 -- dgf6
+	dg1 -- dgf5
+	dg1 -- dgb
+	db1 -- dgb
+	db1 -- dab
+	ab1 -- b1
+	gf1 -- dgf6
+	gf1 -- gfe
+	fe1 -- e1
+	gf2 -- dgf4
+	gf2 -- gfh
+	fh1 -- h1
+	df1 -- dgf2
+	df1 -- dfc
+	fc1 -- c1
+}

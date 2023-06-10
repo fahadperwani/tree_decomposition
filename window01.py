@@ -30,7 +30,7 @@ class Ui_Window01(object):
         edges = self.get_data()
 
         try:
-            Draw_Graph(edges)
+            Draw_Graph(edges, 'graph')
         except:
             print("Invalid String")
         pixmap = QPixmap("graph.gy.png")
@@ -91,3 +91,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+  

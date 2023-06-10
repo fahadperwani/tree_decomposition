@@ -1,10 +1,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import time
+from nice import Ui_Nice
 
 
 class Ui_Decomposition(object):
     def __init__(self, data):
         self.data = data
+        self.edges = None
+
+    def openWindow(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_Nice(self.edges)
+        self.ui.setupUi(self.window)
+        self.scene.clear()
+        self.window.show()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -26,6 +35,10 @@ class Ui_Decomposition(object):
         self.label1.setFont(font)
         self.label.setObjectName("label")
         self.label1.setObjectName("label1")
+        self.nice = QtWidgets.QPushButton(self.centralwidget)
+        self.nice.setGeometry(QtCore.QRect(590, 400, 83, 25))
+        self.nice.setObjectName("nice")
+        self.nice.clicked.connect(self.openWindow)
         self.refresh = QtWidgets.QPushButton(self.centralwidget)
         self.refresh.setGeometry(QtCore.QRect(690, 400, 83, 25))
         self.refresh.setObjectName("refresh")
@@ -51,8 +64,9 @@ class Ui_Decomposition(object):
         _translate = QtCore.QCoreApplication.translate
 
         start = time.time()
-        width, edges = decomposition(self.data)
-        Draw_Graph(edges)
+        width, edges, self.edges = decomposition(self.data)
+        self.edges = edges
+        Draw_Graph(edges, 'decomposition')
         end = time.time()
         self.label.setText(
             _translate(
@@ -66,7 +80,7 @@ class Ui_Decomposition(object):
                 "Tree width of Graph g is : " + str(width),
             )
         )
-        pixmap = QPixmap("graph.gy.png")
+        pixmap = QPixmap("decomposition.gy.png")
         self.scene.addPixmap(pixmap)
         v = TreeDecomposition(self.data, edges)
         print(v.is_valid())
@@ -76,6 +90,7 @@ class Ui_Decomposition(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Graph decomposition takes time :"))
         self.label1.setText(_translate("MainWindow", "Tree width of Graph g is :"))
+        self.nice.setText(_translate("MainWindow", "Nice"))
         self.refresh.setText(_translate("MainWindow", "Show"))
         self.exit.setText(_translate("MainWindow", "Exit"))
 

@@ -1,7 +1,7 @@
 from graphviz import Graph
 
 
-def Draw_Graph(edges):
+def Draw_Graph(edges, type):
     # Directed graph
     G = Graph("graph")
     G.attr("node", shape="circle")
@@ -14,5 +14,10 @@ def Draw_Graph(edges):
         t = z[1]
         G.edge(s, t)
     # save the graph to file, or you can leave it out.
-    G.render(filename="graph.gy", format="png")
+    if type == 'graph':
+        G.render(filename="graph.gy", format="png")
+    elif type == 'decomposition':
+        G.render(filename="decomposition.gy", format="png")
+    elif type == 'nice':
+        G.render(filename="nice.gy", format="png")
     # G.view() graph will in adobe displyed
