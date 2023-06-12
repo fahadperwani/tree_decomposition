@@ -157,10 +157,163 @@ def nice_tree(edges):
                     tree.add_edge(left, u)
             stack.append(right)
             stack.append(left)
-        # stack += neighbors
-    arr = [list(x) for x in tree.edges()]
     result = [
         f"({''.join(map(str, t[0]))}),({''.join(map(str, t[1][:3]))}{t[1][3] if len(t[1]) > 3 else ''})"
         for t in tree.edges()
     ]
+    print(result)
     return result
+
+
+def fetch_columns(data, column_indices):
+    result = []
+    for row in data:
+        selected_columns = [row[i] for i in column_indices]
+        result.append(selected_columns)
+    return result
+
+def find_common_elements(list1, list2):
+    common_elements = []
+    for sublist1 in list1:
+        if sublist1 in list2:
+            common_elements.append(sublist1)
+    return common_elements
+
+def suitable_node(graph):
+    max_length = 0
+    max_node = None
+
+    for node in graph.nodes():
+        length = len(remove_integers(node))  # Assuming the length of the string is the length of the node itself
+        if length > max_length:
+            max_length = length
+            max_node = node
+
+    return max_node
+
+def inorder_traversal(graph, node, g: nx.Graph):
+    visited = set()
+    stack = [node]
+    comb = {}
+
+    while stack:
+        current_node = stack[-1]
+        neighbors = list(graph[current_node])
+
+        if len(neighbors) == 0 or all(n in visited for n in neighbors):
+            node = stack.pop()
+            visited.add(node)
+            print(node)  # or do whatever you want with the node
+            neighbors = list(graph[node])
+            if len(neighbors) == 0:
+                comb[node] = [[1], [2], [3]]
+            elif len(neighbors) == 1:
+                isForget = True
+                for i in remove_integers(node):
+                    if i not in neighbors[0]:
+                        isForget = False
+                        break
+                print(''.join(sorted(remove_integers(node))))
+                print(''.join(sorted(remove_integers(neighbors[0]))))
+                print(''.join(sorted(remove_integers(node))) in ''.join(sorted(remove_integers(neighbors[0]))))
+                comb[node] = []
+                temp = comb[neighbors[0]]
+                if not isForget:
+                    common = remove_integers(neighbors[0])
+                    n = remove_integers(node)
+                    for i in common:
+                        n = n.replace(i, '')
+                    adjacent = list(g.neighbors(n))
+                    idxes = node.index(n)
+                    ad_list = []
+                    for i in remove_integers(node).replace(n, ''):
+                        if i in adjacent:
+                            ad_list.append(neighbors[0].index(i))
+                    columns = fetch_columns(temp, ad_list)
+                    for i in range(len(temp)):
+                        for j in range(3):
+                            if columns and j+1 in columns[i]:
+                                continue
+                            k = temp[i].copy()
+                            k.insert(idxes, j+1)
+                            comb[node].append(k)
+                else:
+                    idxes = []
+                    for i in remove_integers(node):
+                        idxes.append(neighbors[0].index(i))
+                    arr = (fetch_columns(temp, idxes))
+                    arr = [list(t) for t in set(tuple(sublist) for sublist in arr)]
+                    comb[node] = arr
+            elif len(neighbors) == 2:
+                common = (find_common_elements(comb[neighbors[0]], comb[neighbors[1]]))
+                comb[node] = common              
+        else:
+            for neighbor in neighbors[::-1]:
+                if neighbor not in visited:
+                    stack.append(neighbor)
+                    break
+    return comb
+
+def pre_order(graph, node, comb):
+    stack = [node]
+    visited = set()
+    colors = dict()
+    c = comb[node][0]
+    while stack:
+        n = stack.pop()
+        exist = True
+        for i in remove_integers(n):
+            if i not in colors:
+                exist = False
+                break
+        if remove_integers(n) in visited or exist:
+            visited.add(remove_integers(n))
+            neighbors = graph.neighbors(n)
+            for i in neighbors:
+                stack.append(i)
+            continue
+        if n!=node:
+            val = []
+            col = []
+            for i in range(len(remove_integers(n))):
+                if n[i] in colors:
+                    col.append(i)
+                    val.append(colors[n[i]])
+            columns = fetch_columns(comb[n], col)
+            for i in range(len(columns)):
+                contain = True
+                for k, j in enumerate(col):
+                    if columns[i][k] != val[k]:
+                        contain = False
+                        break
+                if contain:
+                    c = comb[n][i]
+                    break
+        for i in range(len(remove_integers(n))):
+            if n[i] not in colors:
+                colors[n[i]] = c[i]
+        neighbors = graph.neighbors(n)
+        for i in neighbors:
+            stack.append(i)
+    return colors
+
+def coloring(o_edges, n_edges):
+    g = nx.Graph()
+    for e in o_edges:
+        e = e.replace('(', '').replace(')', '')
+        r = e.split(',')
+        g.add_edge(r[0], r[1])
+
+    n = nx.Graph()
+    for e in n_edges:
+        e = e.replace('(', '').replace(')', '').split(',')
+        n.add_edge(e[0], e[1])
+
+    g1 = nx.dfs_tree(n, suitable_node(n))
+    comb = inorder_traversal(g1, list(g1.nodes())[0], g)
+    for key, value in comb.items():
+        print(key, ':', value)
+    if comb[list(g1.nodes())[0]]:
+        return (pre_order(g1, list(g1.nodes())[0],comb))
+    else:
+        return None

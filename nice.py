@@ -1,13 +1,24 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import time
 from dec1 import nice_tree
+from coloring import Ui_Coloring
 
 
 class Ui_Nice(object):
     def __init__(self):
         pass
-    def __init__(self, data):
+    def __init__(self, data, o_edges):
         self.data = data
+        self.edges = None
+        self.o_edges = o_edges
+
+    def openWindow(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_Coloring(self.o_edges, self.edges)
+        # self.get_edges()                             # it's important for get num function to be before Show function.
+        self.ui.setupUi(self.window)
+        self.scene.clear()
+        self.window.show()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -27,6 +38,10 @@ class Ui_Nice(object):
         self.exit.setGeometry(QtCore.QRect(790, 560, 83, 25))
         self.exit.setObjectName("exit")
         self.exit.clicked.connect(lambda: MainWindow.close())
+        self.color = QtWidgets.QPushButton(self.centralwidget)
+        self.color.setGeometry(QtCore.QRect(590, 560, 83, 25))
+        self.color.setObjectName("3 color")
+        self.color.clicked.connect(self.openWindow)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -46,6 +61,7 @@ class Ui_Nice(object):
         # start = time.time()
         # width, edges = decomposition(self.data)
         edges = nice_tree(self.data)
+        self.edges = edges
         Draw_Graph(edges, 'nice')
         end = time.time()
         pixmap = QPixmap("nice.gy.png")
@@ -58,6 +74,7 @@ class Ui_Nice(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.refresh.setText(_translate("MainWindow", "Show"))
         self.exit.setText(_translate("MainWindow", "Exit"))
+        self.color.setText(_translate("MainWindow", "3 Color"))
 
 
 if __name__ == "__main__":

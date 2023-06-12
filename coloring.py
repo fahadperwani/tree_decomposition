@@ -1,19 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import time
-from nice import Ui_Nice
+from dec1 import coloring
 
 
-class Ui_Decomposition(object):
-    def __init__(self, data):
+class Ui_Coloring(object):
+    def __init__(self, data=None, nice=None):
         self.data = data
-        self.edges = None
-
-    def openWindow(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_Nice(self.edges, self.data)
-        self.ui.setupUi(self.window)
-        self.scene.clear()
-        self.window.show()
+        self.nice = nice
+        print('\n',self.data, '\n')
+        print(self.nice)
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -35,10 +30,6 @@ class Ui_Decomposition(object):
         self.label1.setFont(font)
         self.label.setObjectName("label")
         self.label1.setObjectName("label1")
-        self.nice = QtWidgets.QPushButton(self.centralwidget)
-        self.nice.setGeometry(QtCore.QRect(590, 400, 83, 25))
-        self.nice.setObjectName("nice")
-        self.nice.clicked.connect(self.openWindow)
         self.refresh = QtWidgets.QPushButton(self.centralwidget)
         self.refresh.setGeometry(QtCore.QRect(690, 400, 83, 25))
         self.refresh.setObjectName("refresh")
@@ -64,33 +55,34 @@ class Ui_Decomposition(object):
         _translate = QtCore.QCoreApplication.translate
 
         start = time.time()
-        width, edges, self.edges = decomposition(self.data)
-        self.edges = edges
-        Draw_Graph(edges, 'decomposition')
+        print('\n',self.data, '\n')
+        colors = coloring(self.data, self.nice)
+        print('\n edges',self.data, '\n')
+        Draw_Graph(self.data, 'graph', colors)
         end = time.time()
-        self.label.setText(
-            _translate(
-                "MainWindow",
-                "Graph decomposition takes time : " + str(round(end - start, 2)) + "s",
+        if colors:
+            self.label.setText(
+                _translate(
+                    "MainWindow",
+                    "Graph decomposition takes time : " + str(round(end - start, 2)) + "s",
+                )
             )
-        )
-        self.label1.setText(
-            _translate(
-                "MainWindow",
-                "Tree width of Graph g is : " + str(width),
+        else:
+            self.label.setText(
+                _translate(
+                    "MainWindow",
+                    "Graph can't be colored with three colors",
+                )
             )
-        )
-        pixmap = QPixmap("decomposition.gy.png")
+
+        pixmap = QPixmap("graph.gy.png")
         self.scene.addPixmap(pixmap)
-        v = TreeDecomposition(self.data, edges)
-        print(v.is_valid())
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label.setText(_translate("MainWindow", "Graph decomposition takes time :"))
+        self.label.setText(_translate("MainWindow", "Coloring takes time :"))
         self.label1.setText(_translate("MainWindow", "Tree width of Graph g is :"))
-        self.nice.setText(_translate("MainWindow", "Nice"))
         self.refresh.setText(_translate("MainWindow", "Show"))
         self.exit.setText(_translate("MainWindow", "Exit"))
 
@@ -100,7 +92,7 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_Decomposition()
+    ui = Ui_Coloring()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

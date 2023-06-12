@@ -1,10 +1,14 @@
 from graphviz import Graph
 
 
-def Draw_Graph(edges, type):
+def Draw_Graph(edges, type, color=None):
     # Directed graph
     G = Graph("graph")
     G.attr("node", shape="circle")
+    colors = ['red', 'green', 'blue']
+    if color:
+        for key, value in color.items():
+            G.node(key, fillcolor=colors[value-1], style='filled')
     for i in edges:
         i = i.replace(" ", "")
         i = i.replace("(", "")
