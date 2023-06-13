@@ -14,7 +14,7 @@ class Ui_Nice(object):
 
     def openWindow(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_Coloring(self.o_edges, self.edges)
+        self.ui = Ui_Coloring(self.o_edges, self.edges, self.node)
         # self.get_edges()                             # it's important for get num function to be before Show function.
         self.ui.setupUi(self.window)
         self.scene.clear()
@@ -60,8 +60,9 @@ class Ui_Nice(object):
 
         # start = time.time()
         # width, edges = decomposition(self.data)
-        edges = nice_tree(self.data)
+        node, edges = nice_tree(self.data)
         self.edges = edges
+        self.node = node
         Draw_Graph(edges, 'nice')
         end = time.time()
         pixmap = QPixmap("nice.gy.png")

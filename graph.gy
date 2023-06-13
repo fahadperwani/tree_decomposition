@@ -1,11 +1,15 @@
 graph "graph" {
 	node [shape=circle]
 	a -- b
-	b -- d
-	d -- c
-	a -- c
 	b -- c
+	c -- d
 	a -- d
-	b -- f
-	f -- d
+	b -- e
+	c -- f
+	e -- f
+	d -- g
+	c -- h
+	f -- i
+	g -- h
+	h -- i
 }

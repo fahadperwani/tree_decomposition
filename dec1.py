@@ -162,7 +162,7 @@ def nice_tree(edges):
         for t in tree.edges()
     ]
     print(result)
-    return result
+    return (node, result)
 
 
 def fetch_columns(data, column_indices):
@@ -297,7 +297,7 @@ def pre_order(graph, node, comb):
             stack.append(i)
     return colors
 
-def coloring(o_edges, n_edges):
+def coloring(o_edges, n_edges, node):
     g = nx.Graph()
     for e in o_edges:
         e = e.replace('(', '').replace(')', '')
@@ -309,11 +309,12 @@ def coloring(o_edges, n_edges):
         e = e.replace('(', '').replace(')', '').split(',')
         n.add_edge(e[0], e[1])
 
-    g1 = nx.dfs_tree(n, suitable_node(n))
-    comb = inorder_traversal(g1, list(g1.nodes())[0], g)
+    # node = suitable_node(n)
+    g1 = nx.dfs_tree(n, node)
+    comb = inorder_traversal(g1, node, g)
     for key, value in comb.items():
         print(key, ':', value)
     if comb[list(g1.nodes())[0]]:
-        return (pre_order(g1, list(g1.nodes())[0],comb))
+        return (pre_order(g1, node,comb))
     else:
         return None

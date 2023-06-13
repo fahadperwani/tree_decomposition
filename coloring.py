@@ -4,9 +4,10 @@ from dec1 import coloring
 
 
 class Ui_Coloring(object):
-    def __init__(self, data=None, nice=None):
+    def __init__(self, data=None, nice=None, node=None):
         self.data = data
         self.nice = nice
+        self.node = node
         print('\n',self.data, '\n')
         print(self.nice)
 
@@ -56,7 +57,7 @@ class Ui_Coloring(object):
 
         start = time.time()
         print('\n',self.data, '\n')
-        colors = coloring(self.data, self.nice)
+        colors = coloring(self.data, self.nice, self.node)
         print('\n edges',self.data, '\n')
         Draw_Graph(self.data, 'graph', colors)
         end = time.time()
@@ -64,7 +65,7 @@ class Ui_Coloring(object):
             self.label.setText(
                 _translate(
                     "MainWindow",
-                    "Graph decomposition takes time : " + str(round(end - start, 2)) + "s",
+                    "Coloring takes time : " + str(round(end - start, 2)) + "s",
                 )
             )
         else:

@@ -1,8 +1,31 @@
 graph "graph" {
 	node [shape=circle]
-	fdb -- db2
-	dcb1 -- dacb
-	db1 -- dcb1
-	db1 -- fdb
-	db2 -- b1
+	dcfh -- dcfh
+	dcfh -- dcfh
+	fcdb -- fcdb
+	fcdb -- fcdb
+	fih -- ih1
+	dhg -- hg1
+	feb -- eb1
+	dab -- ab1
+	dcfh1 -- dcfh
+	dcfh1 -- dcfh
+	dfh1 -- dcfh
+	dh1 -- dfh1
+	dh1 -- dhg
+	hg1 -- g1
+	cfh1 -- dcfh
+	fh1 -- cfh1
+	fh1 -- fih
+	ih1 -- h1
+	dcf1 -- dcfh
+	dcf1 -- fcdb
+	cdb1 -- fcdb
+	db1 -- cdb1
+	db1 -- dab
+	ab1 -- b1
+	fdb1 -- fcdb
+	fb1 -- fdb1
+	fb1 -- feb
+	eb1 -- b2
 }
