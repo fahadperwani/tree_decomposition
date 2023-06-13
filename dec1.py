@@ -111,7 +111,7 @@ def nice_tree(edges):
         #         stack.append(bag)
         #     else:
         #         stack.append(neighbors[0])
-        if l == 1:
+        elif l == 1:
             if remove_integers(n) == remove_integers(neighbors[0]):
                 continue
             bag = None
@@ -138,7 +138,7 @@ def nice_tree(edges):
             tree.add_edge(bag, n)
             tree.add_edge(bag, neighbors[0])
             stack.append(bag)
-        if l >= 2:
+        elif l >= 2:
             left = remove_integers(n) + str(copies[remove_integers(n)])
 
             copies[remove_integers(n)] = copies[remove_integers(n)] + 1
@@ -157,10 +157,7 @@ def nice_tree(edges):
                     tree.add_edge(left, u)
             stack.append(right)
             stack.append(left)
-    result = [
-        f"({''.join(map(str, t[0]))}),({''.join(map(str, t[1][:3]))}{t[1][3] if len(t[1]) > 3 else ''})"
-        for t in tree.edges()
-    ]
+    result = ['(' + ','.join(t) + ')' for t in tree.edges]
     print(result)
     return (node, result)
 

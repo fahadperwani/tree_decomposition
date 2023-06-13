@@ -17,7 +17,6 @@ class Ui_Nice(object):
         self.ui = Ui_Coloring(self.o_edges, self.edges, self.node)
         # self.get_edges()                             # it's important for get num function to be before Show function.
         self.ui.setupUi(self.window)
-        self.scene.clear()
         self.window.show()
 
     def setupUi(self, MainWindow):

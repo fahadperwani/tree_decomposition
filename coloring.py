@@ -21,16 +21,12 @@ class Ui_Coloring(object):
         self.graphicsView.setObjectName("graphicsView")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.scene = QtWidgets.QGraphicsScene(self.centralwidget)  # important lines
-        self.label1 = QtWidgets.QLabel(self.centralwidget)
         self.graphicsView.setScene(self.scene)
         self.label.setGeometry(QtCore.QRect(50, 400, 280, 25))
-        self.label1.setGeometry(QtCore.QRect(50, 370, 230, 25))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.label.setFont(font)
-        self.label1.setFont(font)
         self.label.setObjectName("label")
-        self.label1.setObjectName("label1")
         self.refresh = QtWidgets.QPushButton(self.centralwidget)
         self.refresh.setGeometry(QtCore.QRect(690, 400, 83, 25))
         self.refresh.setObjectName("refresh")
@@ -83,7 +79,6 @@ class Ui_Coloring(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Coloring takes time :"))
-        self.label1.setText(_translate("MainWindow", "Tree width of Graph g is :"))
         self.refresh.setText(_translate("MainWindow", "Show"))
         self.exit.setText(_translate("MainWindow", "Exit"))
 

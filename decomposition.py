@@ -12,7 +12,6 @@ class Ui_Decomposition(object):
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_Nice(self.edges, self.data)
         self.ui.setupUi(self.window)
-        self.scene.clear()
         self.window.show()
 
     def setupUi(self, MainWindow):

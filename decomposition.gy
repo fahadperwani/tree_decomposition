@@ -1,8 +1,9 @@
 graph "graph" {
 	node [shape=circle]
-	dcfh -- fcdb
-	dcfh -- fih
-	dcfh -- dhg
-	fcdb -- feb
-	fcdb -- dab
+	fnm -- em
+	fnm -- nfp
+	em -- bec
+	bec -- bdc
+	nfp -- npl
+	bdc -- abd
 }
