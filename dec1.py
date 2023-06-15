@@ -15,6 +15,10 @@ def decomposition(edges):
     G.add_edges_from(e)
     # Get the tree decompositiong
     bags = treewidth_min_degree(G)
+    if len(bags[1]) == 1:
+        bag = [''.join(j for i in bags[1].nodes for j in i)]
+        bag[0] += ','
+        return(bags[0], bag, bags[1].edges)
     arr = []
     idxes = {}
     for i, bag in enumerate(bags[1].edges()):
@@ -135,7 +139,7 @@ def nice_tree(edges):
             copies[bag] = copies[bag] + 1
             bag+=str(copies[bag])
             tree.remove_edge(n, neighbors[0])
-            tree.add_edge(bag, n)
+            tree.add_edge(n, bag)
             tree.add_edge(bag, neighbors[0])
             stack.append(bag)
         elif l >= 2:

@@ -62,7 +62,7 @@ class Ui_Nice(object):
         node, edges = nice_tree(self.data)
         self.edges = edges
         self.node = node
-        Draw_Graph(edges, 'nice')
+        Draw_Graph(edges, 'nice', node=node)
         end = time.time()
         pixmap = QPixmap("nice.gy.png")
         self.scene.addPixmap(pixmap)

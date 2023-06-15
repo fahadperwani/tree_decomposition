@@ -1,10 +1,12 @@
-from graphviz import Graph
+from graphviz import Graph, Digraph
 
 
-def Draw_Graph(edges, type, color=None):
+def Draw_Graph(edges, type, color=None, node=None):
     # Directed graph
     G = Graph("graph")
     G.attr("node", shape="circle")
+    if node:
+        G.attr(root=node)
     colors = ['red', 'green', 'blue']
     if color:
         for key, value in color.items():
@@ -16,7 +18,10 @@ def Draw_Graph(edges, type, color=None):
         z = i.split(",")
         s = z[0]
         t = z[1]
-        G.edge(s, t)
+        if not t:
+            G.node(s)
+        else:
+            G.edge(s, t)
     # save the graph to file, or you can leave it out.
     if type == 'graph':
         G.render(filename="graph.gy", format="png")

@@ -1,26 +1,9 @@
 graph "graph" {
 	node [shape=circle]
-	f [fillcolor=red style=filled]
-	n [fillcolor=green style=filled]
-	m [fillcolor=blue style=filled]
-	e [fillcolor=red style=filled]
-	b [fillcolor=green style=filled]
 	c [fillcolor=blue style=filled]
-	d [fillcolor=red style=filled]
-	a [fillcolor=blue style=filled]
-	p [fillcolor=blue style=filled]
-	l [fillcolor=red style=filled]
+	b [fillcolor=green style=filled]
+	a [fillcolor=red style=filled]
 	a -- b
 	b -- c
-	c -- d
-	a -- d
-	b -- e
-	c -- e
-	e -- m
-	m -- n
-	m -- f
-	n -- f
-	n -- l
-	l -- p
-	p -- f
+	c -- a
 }

@@ -1,23 +1,7 @@
 graph "graph" {
 	node [shape=circle]
-	fnm -- fnm1
-	fnm -- fnm2
-	npl -- pl1
-	abd -- bd2
-	fn1 -- fnm1
-	fn1 -- nfp
-	np1 -- nfp
-	np1 -- npl
-	pl1 -- l1
-	nm1 -- fnm2
-	m1 -- nm1
-	m1 -- em
-	e1 -- em
-	eb1 -- e1
-	eb1 -- bec
-	bc1 -- bec
-	bc1 -- bdc
-	bd1 -- bdc
-	bd1 -- abd
-	bd2 -- d1
+	root=cba
+	cba -- ba1
+	ba1 -- a1
+	a1
 }
