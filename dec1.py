@@ -192,7 +192,7 @@ def suitable_node(graph):
 
     return max_node
 
-def inorder_traversal(graph, node, g: nx.Graph):
+def inorder_traversal(graph, node, g: nx.Graph, num):
     visited = set()
     stack = [node]
     comb = {}
@@ -207,7 +207,9 @@ def inorder_traversal(graph, node, g: nx.Graph):
             print(node)  # or do whatever you want with the node
             neighbors = list(graph[node])
             if len(neighbors) == 0:
-                comb[node] = [[1], [2], [3]]
+                comb[node] = []
+                for i in range(num):
+                    comb[node].append([i+1])
             elif len(neighbors) == 1:
                 isForget = True
                 for i in remove_integers(node):
@@ -232,7 +234,7 @@ def inorder_traversal(graph, node, g: nx.Graph):
                             ad_list.append(neighbors[0].index(i))
                     columns = fetch_columns(temp, ad_list)
                     for i in range(len(temp)):
-                        for j in range(3):
+                        for j in range(num):
                             if columns and j+1 in columns[i]:
                                 continue
                             k = temp[i].copy()
@@ -298,7 +300,7 @@ def pre_order(graph, node, comb):
             stack.append(i)
     return colors
 
-def coloring(o_edges, n_edges, node):
+def coloring(o_edges, n_edges, node, num):
     g = nx.Graph()
     for e in o_edges:
         e = e.replace('(', '').replace(')', '')
@@ -312,7 +314,7 @@ def coloring(o_edges, n_edges, node):
 
     # node = suitable_node(n)
     g1 = nx.dfs_tree(n, node)
-    comb = inorder_traversal(g1, node, g)
+    comb = inorder_traversal(g1, node, g, num)
     for key, value in comb.items():
         print(key, ':', value)
     if comb[list(g1.nodes())[0]]:

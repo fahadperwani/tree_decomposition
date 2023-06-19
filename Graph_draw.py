@@ -7,7 +7,7 @@ def Draw_Graph(edges, type, color=None, node=None):
     G.attr("node", shape="circle")
     if node:
         G.attr(root=node)
-    colors = ['red', 'green', 'blue']
+    colors = ['red', 'green', 'blue', 'pink', 'yellow', 'gold']
     if color:
         for key, value in color.items():
             G.node(key, fillcolor=colors[value-1], style='filled')

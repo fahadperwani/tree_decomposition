@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import time
 from dec1 import nice_tree
-from coloring import Ui_Coloring
+from dialog import Ui_Dialog
 
 
 class Ui_Nice(object):
@@ -14,7 +14,7 @@ class Ui_Nice(object):
 
     def openWindow(self):
         self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_Coloring(self.o_edges, self.edges, self.node)
+        self.ui = Ui_Dialog(self.o_edges, self.edges, self.node)
         # self.get_edges()                             # it's important for get num function to be before Show function.
         self.ui.setupUi(self.window)
         self.window.show()
@@ -39,7 +39,7 @@ class Ui_Nice(object):
         self.exit.clicked.connect(lambda: MainWindow.close())
         self.color = QtWidgets.QPushButton(self.centralwidget)
         self.color.setGeometry(QtCore.QRect(590, 560, 83, 25))
-        self.color.setObjectName("3 color")
+        self.color.setObjectName("n color")
         self.color.clicked.connect(self.openWindow)
         MainWindow.setCentralWidget(self.centralwidget)
 

@@ -4,10 +4,11 @@ from dec1 import coloring
 
 
 class Ui_Coloring(object):
-    def __init__(self, data=None, nice=None, node=None):
+    def __init__(self, data=None, nice=None, node=None, num=None):
         self.data = data
         self.nice = nice
         self.node = node
+        self.num = num
         print('\n',self.data, '\n')
         print(self.nice)
 
@@ -53,7 +54,7 @@ class Ui_Coloring(object):
 
         start = time.time()
         print('\n',self.data, '\n')
-        colors = coloring(self.data, self.nice, self.node)
+        colors = coloring(self.data, self.nice, self.node, self.num)
         print('\n edges',self.data, '\n')
         Draw_Graph(self.data, 'graph', colors)
         end = time.time()

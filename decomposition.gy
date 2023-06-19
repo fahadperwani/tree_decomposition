@@ -1,4 +1,4 @@
 graph "graph" {
 	node [shape=circle]
-	cba
+	abdc -- df
 }
