@@ -1,4 +1,7 @@
 graph "graph" {
 	node [shape=circle]
-	abdc -- df
+	feb -- ebd
+	feb -- fab
+	feb -- fg
+	ebd -- dcb
 }
