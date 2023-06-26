@@ -1,6 +1,7 @@
 import networkx as nx
+from itertools import combinations
 
-# from networkx.algorithms.approximation import treewidth_min_degree
+from networkx.algorithms.approximation import treewidth_min_fill_in
 from algorithm import treewidth_min_degree
 
 
@@ -14,7 +15,7 @@ def decomposition(edges):
         e.append(tuple(edge))
     G.add_edges_from(e)
     # Get the tree decompositiong
-    bags = treewidth_min_degree(G)
+    bags = treewidth_min_fill_in(G)
     if len(bags[1]) == 1:
         bag = [''.join(j for i in bags[1].nodes for j in i)]
         bag[0] += ','
@@ -165,7 +166,7 @@ def nice_tree(edges):
     print(result)
     return (node, result)
 
-
+# It helps to fetch columns i.e in forget node ab has a child fab so we have to extract all the values for ab that exist in fab
 def fetch_columns(data, column_indices):
     result = []
     for row in data:
@@ -173,6 +174,7 @@ def fetch_columns(data, column_indices):
         result.append(selected_columns)
     return result
 
+# This method helps to find the common element between the children of join node i.e fab will contain common elements of fab1 and fab2
 def find_common_elements(list1, list2):
     common_elements = []
     for sublist1 in list1:
@@ -180,19 +182,10 @@ def find_common_elements(list1, list2):
             common_elements.append(sublist1)
     return common_elements
 
-def suitable_node(graph):
-    max_length = 0
-    max_node = None
-
-    for node in graph.nodes():
-        length = len(remove_integers(node))  # Assuming the length of the string is the length of the node itself
-        if length > max_length:
-            max_length = length
-            max_node = node
-
-    return max_node
-
-def inorder_traversal(graph, node, g: nx.Graph, num):
+'''
+This method does a post order traversal (left, root, right) and calculate the possiblities for that node i.e. for a there would be [[1], [2], [3]]
+'''
+def post_order_traversal(graph, node, g: nx.Graph, num):
     visited = set()
     stack = [node]
     comb = {}
@@ -257,6 +250,10 @@ def inorder_traversal(graph, node, g: nx.Graph, num):
                     break
     return comb
 
+'''
+This method does a preorder traversal (root, left, right) start from root to leaf node it select the combinations of color from calculations for root node
+and on that basis select color for the children i.e root is fa and combination is 1, 2 then children which is a will have color 2
+''' 
 def pre_order(graph, node, comb):
     stack = [node]
     visited = set()
@@ -300,6 +297,7 @@ def pre_order(graph, node, comb):
             stack.append(i)
     return colors
 
+# This is like a main method which uses the upper methods to calculate coloring possiblities and return that
 def coloring(o_edges, n_edges, node, num):
     g = nx.Graph()
     for e in o_edges:
@@ -314,10 +312,197 @@ def coloring(o_edges, n_edges, node, num):
 
     # node = suitable_node(n)
     g1 = nx.dfs_tree(n, node)
-    comb = inorder_traversal(g1, node, g, num)
+    comb = post_order_traversal(g1, node, g, num)
     for key, value in comb.items():
         print(key, ':', value)
     if comb[list(g1.nodes())[0]]:
         return (pre_order(g1, node,comb))
     else:
         return None
+
+# This method is used to find the calculation of a ndoe irrespective of it's order i.e we have node fab we can find it with any combination afb baf etc 
+def find_key(dictionary, target_key):
+    sorted_target_key = ''.join(sorted(target_key))
+    for key in dictionary:
+        sorted_key = ''.join(sorted(key))
+        if sorted_key == sorted_target_key:
+            return dictionary[key]
+    return None
+
+# This method is used to find subsets of a node i.e. for f,a there will be '', 'f', 'a', 'fa'
+def subsets(s):
+    subsets = []
+    for r in range(len(s) + 1):
+        subsets.extend(combinations(s, r))
+    return subsets
+
+'''
+# This method does postorder traversal from leaf to root (left, right, root) and does calculations for max independent set
+find combination of nodes and then make calculations
+'''
+def postorder(graph, node, g: nx.Graph):
+    visited = set()
+    stack = [node]
+    c = dict()
+
+    while stack:
+        current_node = stack[-1]
+        neighbors = list(graph[current_node])
+
+        if len(neighbors) == 0 or all(n in visited for n in neighbors):
+            node = stack.pop()
+            visited.add(node)
+            print(node)  # or do whatever you want with the node
+            neighbors = list(graph[current_node])
+            if len(neighbors) == 0:
+                c[node] = {'': 0 , node[0]: 1}
+            elif len(neighbors) == 1:
+                isForget = True
+                for i in remove_integers(node):
+                    if i not in neighbors[0]:
+                        isForget = False
+                        break
+                if not isForget:
+                    i = set(remove_integers(node))
+                    j = set(remove_integers(neighbors[0]))
+                    v = ''.join(i.intersection(j))
+                    u = remove_integers(node)
+                    for k in v:
+                        if k in u:
+                            u = u.replace(k, '')
+                    s = subsets(j)
+                    for st in s:
+                        if len(st) == 0:
+                            val = c[neighbors[0]]['']
+                            c[node] = {'': val, u: val+1}
+                        else:
+                            inf = False
+                            for k in st:
+                                if k in list(g.neighbors(u)):
+                                    inf = True
+                                    break
+                            st = ''.join(st)
+                            # val = c[neighbors[0]][st]
+                            val = find_key(c[neighbors[0]], st)
+                            c[node][st] = val
+                            if inf:
+                                c[node][u+st] = float('-inf')
+                            else:
+                                c[node][u+st] = val+1
+                else:
+                    i = set(remove_integers(node))
+                    j = set(remove_integers(neighbors[0]))
+                    v = ''.join(i.symmetric_difference(j))
+                    u = remove_integers(node).replace(v, '')
+                    s = subsets(i)
+                    neighbor = c[neighbors[0]]
+                    
+                    for st in s:
+                        if len(st) == 0:
+                            val = find_key(neighbor, v)
+                            c[node] = {'': max(neighbor[''], neighbor[v])}
+                        else:
+                            st = ''.join(st)
+                            v1 = find_key(neighbor, st)
+                            v2 = find_key(neighbor, st+v)
+                            c[node][st] = max(v1, v2)
+            else:
+                i = set(remove_integers(node))
+                s = subsets(i)
+                c[node] = dict()
+                for st in s:
+                    st = ''.join(st)
+                    c[node][st] = find_key(c[neighbors[0]], st) + find_key(c[neighbors[1]], st) - len(st)
+                    print(find_key(c[neighbors[0]], st) + find_key(c[neighbors[1]], st) - len(st))
+        else:
+            for neighbor in neighbors:
+                if neighbor not in visited:
+                    stack.append(neighbor)
+                    break
+    return c
+
+# This method is used to find the maximum value and the node which has maximumm value for root in calculations
+def max_in_dict(c):
+    max = float('-inf')
+    node = ''
+    for key,value in c.items():
+        if value >= c[''] and key != '' and value > max:
+            node=key
+            max = value
+    return (max, node)
+
+# This method uses the calculations does pre order traversal from root to leaf (root, left, right) and return a set of independent nodes 
+def max_ind(graph, node, c, g):
+    visited = {remove_integers(node)}
+    stack = []
+    max_set = set()
+    cant = set()
+    max, n = max_in_dict(c[node])
+    for i in n:
+        max_set.add(i)
+        cant.add(i)
+    n = set(n.split(' '))
+    n = subsets(n)
+    for i in n:
+        i = ''.join(i)
+        if i == '':
+            continue
+        for j in c[node]:
+            if len(j) > len(i):
+                if i in j:
+                    if c[node][j] == max:
+                        for k in j:
+                            max_set.add(k)
+                            cant.add(k)
+                    else:
+                        for k in j:
+                            cant.add(k)
+        stack+=list(graph.neighbors(node))
+    while stack:
+        node = stack.pop()
+        neighbors = list(graph.neighbors(node))
+        if remove_integers(node) not in visited:
+            visited.add(remove_integers(node))
+            m_set = []
+            toadd = []
+            for i in remove_integers(node):
+                if i in max_set:
+                    m_set.append(i)
+                    continue
+                if i not in cant:
+                    toadd.append(i)
+            
+            if toadd:
+                toadd = ''.join(toadd) + ''.join(m_set)
+                v = find_key(c[node], toadd)
+                if v >= c[node]['']:
+                    for i in toadd:
+                        max_set.add(i)
+                        cant.add(i)
+                else:
+                    for i in toadd:
+                        cant.add(i)
+
+        stack+=neighbors
+    return (max_set, max)
+
+# This method takes the original graph and nice edges from gui, uses upper methods and return max independent set
+def max_independent_set(edges, o):
+    n = nx.DiGraph()
+    for e in edges:
+        e = e.replace('(', '').replace(')', '')
+        e = e.split(',')
+        n.add_edge(e[0].strip(), e[1].strip())
+
+    g = nx.Graph()
+    for e in o:
+        e = e.replace('(', '').replace(')', '')
+        e = e.split(',')
+        g.add_edge(e[0], e[1])
+    node = list(n.nodes())[0]
+    c = postorder(n, node, g)
+    for k, v in c.items():
+        print('\n')
+        print(k,":", v)
+    print("Max: ",max_ind(n, node, c, g))
+    return max_ind(n, node, c, g)

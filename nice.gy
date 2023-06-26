@@ -1,22 +1,23 @@
 graph "graph" {
 	node [shape=circle]
-	root=feb
-	feb -- feb1
-	feb -- feb2
-	ebd -- bd1
-	fab -- ab1
-	fg -- g1
-	dcb -- cb1
-	feb1 -- feb3
-	feb1 -- feb4
-	feb2 -- eb1
-	feb3 -- fb1
-	feb4 -- fb2
-	fb1 -- f1
-	f1 -- fg
-	fb2 -- fab
+	root=cdb
+	cdb -- cdb1
+	cdb -- cdb2
+	dab -- ab1
+	cbe -- be1
+	ef -- ef1
+	ef -- ef2
+	hf -- f4
+	gf -- f2
+	cdb1 -- cb1
+	cdb2 -- db1
+	cb1 -- cbe
+	be1 -- e1
+	e1 -- ef
+	ef1 -- f1
+	ef2 -- f3
+	f1 -- gf
+	f3 -- hf
+	db1 -- dab
 	ab1 -- b1
-	eb1 -- ebd
-	bd1 -- dcb
-	cb1 -- b2
 }

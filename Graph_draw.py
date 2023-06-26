@@ -1,7 +1,7 @@
 from graphviz import Graph, Digraph
 
 
-def Draw_Graph(edges, type, color=None, node=None):
+def Draw_Graph(edges, type, color=None, node=None, max_set=None):
     # Directed graph
     G = Graph("graph")
     G.attr("node", shape="circle")
@@ -11,6 +11,9 @@ def Draw_Graph(edges, type, color=None, node=None):
     if color:
         for key, value in color.items():
             G.node(key, fillcolor=colors[value-1], style='filled')
+    if max_set:
+        for n in max_set:
+            G.node(n, fillcolor='green', style='filled')
     for i in edges:
         i = i.replace(" ", "")
         i = i.replace("(", "")

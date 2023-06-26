@@ -1,7 +1,16 @@
 graph "graph" {
 	node [shape=circle]
-	feb -- ebd
-	feb -- fab
-	feb -- fg
-	ebd -- dcb
+	c [fillcolor=green style=filled]
+	g [fillcolor=green style=filled]
+	a [fillcolor=green style=filled]
+	h [fillcolor=green style=filled]
+	a -- b
+	b -- c
+	c -- d
+	d -- a
+	b -- e
+	c -- e
+	e -- f
+	f -- g
+	f -- h
 }

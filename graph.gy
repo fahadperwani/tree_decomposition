@@ -1,11 +1,20 @@
 graph "graph" {
 	node [shape=circle]
+	c [fillcolor=blue style=filled]
+	d [fillcolor=red style=filled]
+	b [fillcolor=pink style=filled]
+	a [fillcolor=green style=filled]
+	e [fillcolor=gold style=filled]
+	f [fillcolor=green style=filled]
+	h [fillcolor=red style=filled]
+	g [fillcolor=red style=filled]
 	a -- b
 	b -- c
 	c -- d
-	d -- e
+	d -- a
+	b -- e
+	c -- e
 	e -- f
-	b -- f
 	f -- g
-	f -- a
+	f -- h
 }
