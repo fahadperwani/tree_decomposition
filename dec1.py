@@ -64,8 +64,12 @@ def nice_tree(edges):
         edge = edge.replace(")", "").replace("'", "").replace('(', '')
         print("edge", tuple(edge.split(',')))
         edge = edge.split(',')
+        if edge[1]:
+            G.add_edge(edge[0], edge[1])
+        else:
+            G.add_node(edge[0])
         e.append(tuple(edge))
-    G.add_edges_from(e)
+    # G.add_edges_from(e)
     tree: nx.DiGraph = nx.bfs_tree(G, list(G.nodes())[0])
     node = list(tree.nodes())[0]
     copies = {n: 1 for n in tree.nodes()}
